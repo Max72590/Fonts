@@ -1,46 +1,47 @@
 #include <SDL.h>
 #include <stdio.h>
-
-const int WINDOW_SCREEN_WIDTH = 640;
-const int WINDOW_SCREEN_HEIGHT = 480;
-
-void Init() {
-	
+#include "FontManager.h"
 
 
+
+
+
+
+void PrintFont(FontManager* fm, int x, int y, const char* c) {
+	Font *f = fm->getFont();
+	SDL_Rect srect;
+	srect.x = fm->actualFont->coordX;
+	srect.y = 0;
+	srect.w = f->width;
+	srect.h = 9;
+	SDL_Rect drect;
+	drect.x = x;
+	drect.y = y;
+	drect.w = f->width;
+	drect.h = 9;
+	SDL_RenderCopy(fm->renderer, fm->getFont()->texture, &srect, &drect);
 }
-void Update() {
 
-}
-void Render() {
-
-}
 void End() {
 
 }
 
 int main(int argc, char* args[]) {
-
-	SDL_Window* sdlWindow = nullptr;
-	SDL_Surface* sdlScreenSurface = nullptr;
 	
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		printf("Error in SDL initialization: %s\n", SDL_GetError());
-	}
-	else {
-		sdlWindow = SDL_CreateWindow("Fonts", SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED, WINDOW_SCREEN_WIDTH, WINDOW_SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (sdlWindow = NULL) {
-			printf("Error in creating window: %s\n", SDL_GetError());
-		}
-		else {
-			sdlScreenSurface = SDL_GetWindowSurface(sdlWindow);
-			SDL_FillRect(sdlScreenSurface, NULL, SDL_MapRGB(sdlScreenSurface->format, 0xFF,0xFF, 0xFF));
-			SDL_UpdateWindowSurface(sdlWindow);
-			SDL_Delay(2000);
-			SDL_DestroyWindow(sdlWindow);
-			SDL_Quit();
-		}
-	}
+	FontManager* fm = new FontManager();
+	bool gameLoop = true;
+	fm->Init();
+	//PrintFont(fm, 240, 320, "ABCD");
+	/*while (gameLoop) {
+	PrintFont(fm, 240, 320, "ABCD");
+	}*/
 
+
+	SDL_Delay(5000);
+
+	fm->End();
+	delete fm;
+	fm = nullptr;
+	
 	return 0;
 }
