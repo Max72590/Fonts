@@ -1,42 +1,41 @@
 #pragma once
 #include <vector>
+#include <map>
+#include <string>
 #include "SDL.h"
 #include "Font.h"
 
-enum FontNames
-{
-	FONT1,
-	FONT2,
-	FONT3
-};
-
 const int WINDOW_SCREEN_WIDTH = 640;
 const int WINDOW_SCREEN_HEIGHT = 480;
+
+
+
 
 class FontManager
 {
 public:
 	FontManager();
 	~FontManager();
-	
-	void Init();
-
-	bool Start(SDL_Window *window);
-
-	bool LoadFont(int index, const char* message, SDL_Renderer *renderer);
-
-	void End();
-
-	Font* getFont();
+	void init();
+	Font* getActualFont();
+	void setActualFont(const char* name);
+	bool start(SDL_Window *window);
+	bool loadFont(std::string name);
+	void end();
+	SDL_Renderer* getRenderer();
 
 public:
 
+
+	SDL_Surface* sdlScreenSurface = nullptr;
+
+	std::string path = "C:\\Users\\Usuario\\Documents\\Max\\Master\\EjerFonts\\";
+
+private:
+	Font* actualFont;
+	std::vector<Font*> listOfFonts;
+	std::map <const char*, int> fontTable;
 	SDL_Renderer *renderer;
 	SDL_Window *appWindow;
-	SDL_Surface* sdlScreenSurface = nullptr;
-	Font* actualFont;
-	std::vector<const char*> listOfFonts;
-
-
 };
 

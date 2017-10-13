@@ -1,45 +1,35 @@
 #include <SDL.h>
 #include <stdio.h>
 #include "FontManager.h"
+#include <string>
+using namespace std;
 
 
+FontManager* fm = new FontManager();
 
 
-
-
-void PrintFont(FontManager* fm, int x, int y, const char* c) {
-	Font *f = fm->getFont();
-	SDL_Rect srect;
-	srect.x = fm->actualFont->coordX;
-	srect.y = 0;
-	srect.w = f->width;
-	srect.h = 9;
-	SDL_Rect drect;
-	drect.x = x;
-	drect.y = y;
-	drect.w = f->width;
-	drect.h = 9;
-	SDL_RenderCopy(fm->renderer, fm->getFont()->texture, &srect, &drect);
-}
-
-void End() {
-
+void PrintFont(int x, int y, string text, SDL_Surface* surface) {
+	(fm->getActualFont())->drawText(x,y,text, surface);
 }
 
 int main(int argc, char* args[]) {
 	
-	FontManager* fm = new FontManager();
+
 	bool gameLoop = true;
-	fm->Init();
-	//PrintFont(fm, 240, 320, "ABCD");
-	/*while (gameLoop) {
-	PrintFont(fm, 240, 320, "ABCD");
-	}*/
-
-
-	SDL_Delay(5000);
-
-	fm->End();
+	fm->init();
+	if (fm->loadFont("lemgreen.bmp")) printf("Load successful \n");
+	fm->setActualFont("lemgreen.bmp");
+	string message = "ABCD\0";
+	PrintFont(200,300,message,fm->sdlScreenSurface);
+	//fm->loadFont("lemred.bmp");
+	//fm->loadFont("lemyellow.bmp");
+	
+	while (1)
+	{
+		SDL_RenderPresent(fm->getRenderer());
+	}
+	//SDL_Delay(60000);
+	//fm->end();
 	delete fm;
 	fm = nullptr;
 	
