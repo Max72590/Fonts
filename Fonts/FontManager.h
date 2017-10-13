@@ -23,6 +23,8 @@ public:
 	bool loadFont(std::string name);
 	void end();
 	SDL_Renderer* getRenderer();
+	SDL_Renderer *renderer;
+	SDL_Window *appWindow;
 
 public:
 
@@ -35,7 +37,6 @@ private:
 	Font* actualFont;
 	std::vector<Font*> listOfFonts;
 	std::map <const char*, int> fontTable;
-	SDL_Renderer *renderer;
-	SDL_Window *appWindow;
+
 };
 

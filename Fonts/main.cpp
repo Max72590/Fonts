@@ -23,10 +23,12 @@ int main(int argc, char* args[]) {
 	PrintFont(200,300,message,fm->sdlScreenSurface);
 	//fm->loadFont("lemred.bmp");
 	//fm->loadFont("lemyellow.bmp");
-	
+	SDL_UpdateWindowSurface(fm->appWindow);
+
+	SDL_RenderPresent(fm->getRenderer());
 	while (1)
 	{
-		SDL_RenderPresent(fm->getRenderer());
+		SDL_UpdateWindowSurface(fm->appWindow);		
 	}
 	//SDL_Delay(60000);
 	//fm->end();

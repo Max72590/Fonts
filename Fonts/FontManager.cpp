@@ -32,8 +32,9 @@ void FontManager::init() {
 		}
 		else {
 			sdlScreenSurface = SDL_GetWindowSurface(appWindow);
+			//sdlScreenSurface = SDL_DisplayFormat(image);
 			if (sdlScreenSurface != nullptr) {
-				SDL_FillRect(sdlScreenSurface, NULL, SDL_MapRGB(sdlScreenSurface->format, 0xFF, 0xFF, 0xFF));
+				SDL_FillRect(sdlScreenSurface, NULL, SDL_MapRGB(sdlScreenSurface->format, 0x00, 0x00, 0x00));
 				SDL_UpdateWindowSurface(appWindow);
 				start(appWindow);
 			}

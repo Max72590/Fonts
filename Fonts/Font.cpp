@@ -22,8 +22,9 @@ Font::Font(SDL_Surface* surface)
 	if (surface != nullptr) {
 		bmp = surface;
 		bgColor = SDL_MapRGB( bmp->format, 0x00, 0x00, 0x00);
-		int width = bmp->w / 94;
-		int height = bmp->h;
+		
+		int width = bmp->h;
+		int  height = bmp->w/ 94;
 
 		for (int i = 0; i < 94; ++i) {
 			char c = letters[i];
