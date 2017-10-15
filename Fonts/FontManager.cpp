@@ -14,11 +14,20 @@ Font* FontManager::getActualFont() {
 	return actualFont;
 }
 
-void FontManager::setActualFont(const char* name) {
-	if (name != nullptr) {
-		actualFont = listOfFonts[fontTable[name]];
+Font* FontManager::getFont(string name) {
+	int index = -1;
+	index = fontTable[name];
+	if (index > -1 && index < (int) listOfFonts.size()) {
+		return listOfFonts[index];
 	}
-	else printf("Error name is empty\n");
+	return nullptr;
+}
+
+void FontManager::setActualFont(Font* font) {
+	if (font != nullptr) {
+		actualFont = font;
+	}
+	else printf("Error font parameter is empty\n");
 }
 
 void FontManager::init() {
@@ -32,7 +41,6 @@ void FontManager::init() {
 		}
 		else {
 			sdlScreenSurface = SDL_GetWindowSurface(appWindow);
-			//sdlScreenSurface = SDL_DisplayFormat(image);
 			if (sdlScreenSurface != nullptr) {
 				SDL_FillRect(sdlScreenSurface, NULL, SDL_MapRGB(sdlScreenSurface->format, 0x00, 0x00, 0x00));
 				SDL_UpdateWindowSurface(appWindow);
@@ -50,7 +58,11 @@ bool FontManager::start(SDL_Window *window) {
 		appWindow = window;
 		renderer = SDL_CreateRenderer(appWindow, -1, NULL);
 		if (renderer != nullptr) {
+			if (loadFont("lemgreen.bmp")) printf("Load successful \n");
+			if (loadFont("lemred.bmp")) printf("Load successful \n");
+			if (loadFont("lemyellow.bmp")) printf("Load successful \n");
 			return true;
+
 		}
 		printf("Error creating renderer %s\n", SDL_GetError());
 	}
@@ -60,20 +72,25 @@ bool FontManager::start(SDL_Window *window) {
 
 bool FontManager::loadFont(string name) {
 	if (!name.empty()) {
-		SDL_Surface *fontsurface = SDL_LoadBMP((path.append(name)).c_str());
-		printf("Path name:  %s\n", (path.c_str()));
+		string relativepath = path;
+		SDL_Surface *fontsurface = SDL_LoadBMP((relativepath.append(name)).c_str());
 		if (fontsurface != nullptr) {
 			Font* f = new Font(fontsurface);
 			if (f->bmp != nullptr) {
+				fontTable[name] = listOfFonts.size();
 				listOfFonts.push_back(f);
-				fontTable[name.c_str()] = listOfFonts.size();
 				return true;
 			}			
 		}
+
 		else printf("Error bitmap couldn't be loaded  %s\n", SDL_GetError());
 	}
 	else printf("Error name is empty\n");
 	return false;
+}
+
+void FontManager::drawFont(int x, int y, string text, SDL_Surface* surface) {
+	actualFont->drawText(x,y,text,surface);
 }
 
 void FontManager::end() {
@@ -81,6 +98,11 @@ void FontManager::end() {
 		actualFont->cleanUp();
 		delete actualFont;
 		actualFont = nullptr;
+	}
+	if (listOfFonts.size() > 0) {
+		for (int i = 0; i < (int)listOfFonts.size(); ++i) {
+			listOfFonts[i]->cleanUp();
+		}
 	}
 	SDL_FreeSurface(sdlScreenSurface);
 	sdlScreenSurface = nullptr;

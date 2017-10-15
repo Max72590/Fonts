@@ -17,7 +17,6 @@ public:
 
 	void cleanUp();
 	Uint32 pixelToInt32(int x, int y,const SDL_Surface* surface);
-
 	void drawText(int posX, int posY, std::string text, SDL_Surface* screen);
 
 public:
