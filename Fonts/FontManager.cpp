@@ -77,7 +77,7 @@ bool FontManager::loadFont(string name) {
 		if (fontsurface != nullptr) {
 			Font* f = new Font(fontsurface);
 			if (f->bmp != nullptr) {
-				fontTable[name] = listOfFonts.size();
+				fontTable[name] = (int)listOfFonts.size();
 				listOfFonts.push_back(f);
 				return true;
 			}			
@@ -87,10 +87,6 @@ bool FontManager::loadFont(string name) {
 	}
 	else printf("Error name is empty\n");
 	return false;
-}
-
-void FontManager::drawFont(int x, int y, string text, SDL_Surface* surface) {
-	actualFont->drawText(x,y,text,surface);
 }
 
 void FontManager::end() {
